@@ -2,11 +2,12 @@ version: "3"
 services:
   api:
     # Quando já tiver uma imagem da api
-    image: alexvecchi/api-ts_api:mytag
+    image: alexvecchi/api-ts
     # Gera a imagem e sobe a mesma 
-    #build: .
+    # build: .
+    # image: alexvecchi/api-ts
     ports:
-      - "3050:3050"
+      - "80:3050"
     links:
       - link-db
   link-db:
