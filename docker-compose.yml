@@ -7,7 +7,7 @@ services:
     # build: .
     # image: alexvecchi/api-ts
     ports:
-      - "80:3050"
+      - "5000:3050"
     links:
       - link-db
   link-db:
@@ -17,3 +17,5 @@ services:
       - "28017:28017"
     environment:
       - AUTH=no
+  redis:
+    image: "redis"
