@@ -3,12 +3,14 @@ import * as redis from "redis";
 
 import NewsService from "../services/newsService";
 import Helper from "../infra/helper";
+import exportFiles from "../infra/exportFiles";
 
 class NewsController {
 
   async get(req, res) {
-    // let client = redis.createClient();
-    let client = redis.createClient(6379, "redis");
+    console.log("carregando redis");
+    let client = redis.createClient();
+    // let client = redis.createClient(6379, "redis");
 
     await client.get("news", async function (err, reply) {
       try {
@@ -35,7 +37,19 @@ class NewsController {
     try {
       const _id = req.params.id;
       let response = await NewsService.getById(_id);
+
       Helper.sendResponse(res, HttpStatus.OK, response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async exportToCsv(req, res) {
+    try {
+      let response = await NewsService.get();
+      let filename = exportFiles.tocsv(response);
+
+      Helper.sendResponse(res, HttpStatus.OK, req.get('host') + "/exports/" + filename);
     } catch (error) {
       console.error(error);
     }
@@ -44,6 +58,8 @@ class NewsController {
   async create(req, res) {
     try {
       let vm = req.body;
+
+      // console.log(vm);
       NewsService.create(vm);
       Helper.sendResponse(res, HttpStatus.OK, "Noticia cadastrada com sucesso!");
     } catch (error) {

@@ -13,6 +13,7 @@ class NewsService {
   }
 
   async create(news) {
+    // console.log(news);
     let result =  await NewsRepository.create(news);
     return result;
   }
