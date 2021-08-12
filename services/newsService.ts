@@ -13,9 +13,10 @@ class NewsService {
     let startDate = new Date("2019-01-01T00:00:00.000Z");
     let endDate = new Date("2019-03-01T00:00:00.000Z");
 
+    let result = await NewsRepository.find();
     // let result = await NewsRepository.find({ 'active': true, 'tag': 'not' }, 'title, hat img publishDate');
     // let result = await NewsRepository.find({ 'active': true }, 'title hat img publishDate').sort({ publishDate: -1 }).limit(2);
-    let result = await NewsRepository.find({ 'publishDate': { $gt: startDate, lt$: endDate } }, 'title hat img publishDate').sort({ publishDate: -1 }).limit(2);
+    // let result = await NewsRepository.find({ 'publishDate': { $gt: startDate, $lt: endDate } }, 'title hat img publishDate').sort({ publishDate: -1 }).limit(2);
     return result;
   }
 

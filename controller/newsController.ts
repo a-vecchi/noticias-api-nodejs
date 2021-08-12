@@ -4,13 +4,17 @@ import * as redis from "redis";
 import NewsService from "../services/newsService";
 import Helper from "../infra/helper";
 import exportFiles from "../infra/exportFiles";
+import auth from "../infra/auth";
 
 class NewsController {
 
   async get(req, res) {
     console.log("carregando redis");
-    let client = redis.createClient();
+    // let client = redis.createClient();
     // let client = redis.createClient(6379, "redis");
+    var client = redis.createClient(6380, "apitsnoticias.redis.cache.windows.net",
+      { auth_pass: "TB2UhNEme9pn5TmXFbLsNJ5TdEyUQJ9vxSZvCCVAf6U=", tls: { servername: "apitsnoticias.redis.cache.windows.net" } });
+
 
     await client.get("news", async function (err, reply) {
       try {
@@ -49,7 +53,7 @@ class NewsController {
       const term = req.params.term;
       const page = (req.param('page')) ? parseInt(req.param('page')) : 1;
       const perPage = (req.param('limit')) ? parseInt(req.param('limit')) : 10;
-      
+
       let response = await NewsService.search(term, page, perPage);
 
       Helper.sendResponse(res, HttpStatus.OK, response);

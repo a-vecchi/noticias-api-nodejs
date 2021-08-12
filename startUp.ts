@@ -1,8 +1,9 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
-import * as compression from "compression"; 
-import * as from "express-graphql";
+import * as compression from "compression";
+import { graphqlHTTP } from "express-graphql";
+import * as appInsights from "applicationinsights";
 
 import Database from "./infra/db";
 import auth from "./infra/auth";
@@ -10,6 +11,7 @@ import uploads from "./infra/uploads";
 import newsRouter from "./router/newsRouter";
 import schemas from "./graphql/schemas";
 import resolvers from "./graphql/resolvers";
+
 
 class StartUp {
 
@@ -23,6 +25,7 @@ class StartUp {
     this._db.createConnection();
     this.middler();
     this.routes();
+    this.monitoramento();
   }
 
   enableCors() {
@@ -31,6 +34,10 @@ class StartUp {
       origin: "*" // "https://teste.net"
     }
     this.app.use(cors(options));
+  }
+
+  monitoramento() {
+    appInsights.setup('a9f30609-2755-4799-8735-2117d30420d4').start();
   }
 
   middler() {
@@ -56,7 +63,7 @@ class StartUp {
 
     // this.app.use(auth.validate);
 
-    this.app.use('/graphql', from.graphqlHTTP({
+    this.app.use('/graphql', graphqlHTTP({
       schema: schemas,
       rootValue: resolvers,
       graphiql: true

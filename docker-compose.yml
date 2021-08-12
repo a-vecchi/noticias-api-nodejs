@@ -2,10 +2,10 @@ version: "3"
 services:
   api:
     # Quando já tiver uma imagem da api
-    image: alexvecchi/api-ts
-    # Gera a imagem e sobe a mesma 
-    # build: .
     # image: alexvecchi/api-ts
+    # Gera a imagem e sobe a mesma 
+    build: .
+    image: alexvecchi/api-ts
     ports:
       - "5000:3050"
     links:
