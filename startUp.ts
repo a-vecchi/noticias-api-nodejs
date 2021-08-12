@@ -7,7 +7,7 @@ import * as appInsights from "applicationinsights";
 
 import Database from "./infra/db";
 import auth from "./infra/auth";
-import uploads from "./infra/uploads";
+import uploads from "./infra/uploads-old";
 import newsRouter from "./router/newsRouter";
 import schemas from "./graphql/schemas";
 import resolvers from "./graphql/resolvers";
