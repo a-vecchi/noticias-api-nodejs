@@ -1,15 +1,14 @@
-import * as multer from 'multer';
-import { MulterAzureStorage } from 'multer-azure-blob-storage';
+import * as multer from "multer";
 
-const azureStorage: MulterAzureStorage = new MulterAzureStorage({
-    connectionString: 'DefaultEndpointsProtocol=https;AccountName=apitsnoticiasblob;AccountKey=z9BGlQGu6ZWCAQQyhJaa4UH9oFdAkgFyrcyYZ9C4kLxZW66fOM0rJZp1LcarE12LxEABg3wzk3zkQkUQuM5O2Q==;EndpointSuffix=core.windows.net',
-    accessKey: 'z9BGlQGu6ZWCAQQyhJaa4UH9oFdAkgFyrcyYZ9C4kLxZW66fOM0rJZp1LcarE12LxEABg3wzk3zkQkUQuM5O2Q==',
-    accountName: 'apitsnoticiasblob',
-    containerName: 'apitsnoticiasblobupload',
-    containerAccessLevel: 'blob',
-    urlExpirationTime: 60
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
 });
 
-const uploadAzure = multer({ storage: azureStorage });
+const uploads = multer ({storage: storage});
 
-export default uploadAzure;
+export default uploads;

@@ -7,10 +7,11 @@ import * as appInsights from "applicationinsights";
 
 import Database from "./infra/db";
 import auth from "./infra/auth";
-import uploads from "./infra/uploads-old";
+import uploads from "./infra/uploads";
 import newsRouter from "./router/newsRouter";
 import schemas from "./graphql/schemas";
 import resolvers from "./graphql/resolvers";
+import uploadAzure from "./infra/uploadsAzure";
 
 
 class StartUp {
@@ -53,13 +54,15 @@ class StartUp {
       res.send({ versao: "0.0.1" });
     });
 
-    this.app.route("/uploads").post(uploads.single("file"), (req, res) => {
-      try {
-        res.send("Arquivo enviado com sucesso.");
-      } catch (error) {
-        console.log(error);
-      }
-    });
+    this.app.route("/uploads")
+      // .post(uploads.single("file"), (req, res) => {
+      .post(uploadAzure.single("file"), (req, res) => {
+        try {
+          res.send("Arquivo enviado com sucesso.");
+        } catch (error) {
+          console.log(error);
+        }
+      });
 
     // this.app.use(auth.validate);
 
